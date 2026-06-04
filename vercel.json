@@ -2,18 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "ToDo_Project/ToDo_Project/wsgi.py",
+      "src": "ToDo_Project/todo_project/wsgi.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
-      "src": "/static/(.*)",
-      "dest": "ToDo_Project/static/$1"
-    },
-    {
       "src": "/(.*)",
-      "dest": "ToDo_Project/ToDo_Project/wsgi.py"
+      "dest": "ToDo_Project/todo_project/wsgi.py"
     }
   ]
 }
