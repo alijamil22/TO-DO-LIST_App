@@ -1,0 +1,54 @@
+{% extends "todo_app/base.html" %}
+
+{% block title %}All Tasks{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>📋 My Tasks</h2>
+    <a href="{% url 'todo_create' %}" class="btn btn-primary">+ New Task</a>
+</div>
+
+<!-- Filter Buttons -->
+<div class="mb-3">
+    <a href="{% url 'todo_list' %}" class="btn btn-outline-secondary btn-sm">All</a>
+    <a href="{% url 'todo_list' %}?status=pending" class="btn btn-outline-warning btn-sm">Pending</a>
+    <a href="{% url 'todo_list' %}?status=completed" class="btn btn-outline-success btn-sm">Completed</a>
+</div>
+
+<!-- Task Cards -->
+{% if todos %}
+    {% for todo in todos %}
+    <div class="card mb-3 {% if todo.is_overdue %}border-danger{% elif todo.completed %}border-success{% endif %}">
+        <div class="card-body d-flex justify-content-between align-items-center">
+            
+            <div>
+                <h5 class="card-title {% if todo.completed %}text-decoration-line-through text-muted{% endif %}">
+                    {{ todo.title }}
+                </h5>
+                <small class="text-muted">
+                    📁 {{ todo.category }} &nbsp;|&nbsp;
+                    🔥 {{ todo.priority }} &nbsp;|&nbsp;
+                    📅 {{ todo.due_date|default:"No due date" }}
+                    {% if todo.is_overdue %}
+                        <span class="badge bg-danger ms-2">Overdue</span>
+                    {% endif %}
+                    {% if todo.completed %}
+                        <span class="badge bg-success ms-2">Completed</span>
+                    {% endif %}
+                </small>
+            </div>
+
+            <div class="d-flex gap-2">
+                <a href="{% url 'todo_update' todo.pk %}" class="btn btn-sm btn-outline-primary">✏️ Edit</a>
+                <a href="{% url 'todo_delete' todo.pk %}" class="btn btn-sm btn-outline-danger">🗑️ Delete</a>
+            </div>
+
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <div class="alert alert-info">No tasks found. Click <a href="{% url 'todo_create' %}">+ New Task</a> to add one!</div>
+{% endif %}
+
+{% endblock %}
