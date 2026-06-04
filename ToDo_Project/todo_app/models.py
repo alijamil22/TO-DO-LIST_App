@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.urls import reverse
+from django.contrib.auth.models import User
 class Todo(models.Model):
     Priorities = [
         ('Low', 'Low'),
@@ -15,7 +16,7 @@ class Todo(models.Model):
         ('Health','Health'),
         ('Other','Other'),
     ]
-    
+    user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='todos')
     title = models.CharField(max_length=250,help_text="What's need to be done?")
     completed = models.BooleanField(default=False,help_text='Is this task finished?')    
     created_at = models.DateTimeField(auto_now_add=True,help_text="When was this task added?")
