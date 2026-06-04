@@ -1,0 +1,37 @@
+{% extends "todo_app/base.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white">
+                <h4 class="mb-0">📝 Register</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="text-danger small mt-1">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-dark">Create Account</button>
+                    </div>
+                </form>
+                <p class="text-center mt-3 mb-0">
+                    Already have an account? <a href="{% url 'login' %}">Login</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

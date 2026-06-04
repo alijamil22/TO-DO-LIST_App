@@ -16,19 +16,34 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'todo_list' %}">All Tasks</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'todo_list' %}?status=pending">Pending</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'todo_list' %}?status=completed">Completed</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-primary text-white px-3" href="{% url 'todo_create' %}">+ New Task</a>
-                    </li>
-                </ul>
+    {% if user.is_authenticated %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'todo_list' %}">All Tasks</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'todo_list' %}?status=pending">Pending</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'todo_list' %}?status=completed">Completed</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link btn btn-primary text-white px-3 me-2" href="{% url 'todo_create' %}">+ New Task</a>
+        </li>
+        <li class="nav-item">
+            <form method="POST" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-light btn-sm mt-1">Logout</button>
+            </form>
+        </li>
+    {% else %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Login</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'register' %}">Register</a>
+        </li>
+    {% endif %}
+</ul>
             </div>
         </div>
     </nav>

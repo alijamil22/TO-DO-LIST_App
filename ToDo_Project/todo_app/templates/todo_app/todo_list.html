@@ -40,6 +40,14 @@
             </div>
 
             <div class="d-flex gap-2">
+        <form method="POST" action="{% url 'todo_toggle' todo.pk %}">
+        {% csrf_token %}
+        {% if todo.completed %}
+            <button type="submit" class="btn btn-sm btn-success">✅ Done</button>
+        {% else %}
+            <button type="submit" class="btn btn-sm btn-outline-success">⬜ Mark Done</button>
+        {% endif %}
+    </form>
                 <a href="{% url 'todo_update' todo.pk %}" class="btn btn-sm btn-outline-primary">✏️ Edit</a>
                 <a href="{% url 'todo_delete' todo.pk %}" class="btn btn-sm btn-outline-danger">🗑️ Delete</a>
             </div>
