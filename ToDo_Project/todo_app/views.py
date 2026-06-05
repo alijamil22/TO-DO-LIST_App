@@ -7,6 +7,7 @@ from django.views.generic import ListView, CreateView,UpdateView,DeleteView,Form
 from django.views import View
 from django.contrib import messages
 from .models import Todo
+from django.shortcuts import get_object_or_404
 from .forms import Todo_Form
 #Authentication views
 class RegisterView(FormView):
@@ -29,9 +30,9 @@ class TodoListView(LoginRequiredMixin,ListView):
     def get_queryset(self):
         status = self.request.GET.get('status')
         if status == 'completed':
-            return Todo.objects.filter(completed=True)
+            return Todo.objects.filter(user=self.request.user, completed=True)  
         elif status == 'pending':
-            return Todo.objects.filter(completed=False)
+            return Todo.objects.filter(user=self.request.user, completed=False) 
         return Todo.objects.filter(user=self.request.user)
 class TodoCreateView(LoginRequiredMixin,CreateView):
     model = Todo
@@ -60,7 +61,7 @@ class TodoDeleteView(LoginRequiredMixin,DeleteView):
         return reverse('todo_list')
 class TodoToggleView(LoginRequiredMixin,View):
     def post(self,request,pk):
-        todo =Todo.objects.get(pk=pk,user=request.user)
+        todo = get_object_or_404(Todo, pk=pk, user=request.user)
         if todo.completed:
             todo.mark_incomplete()
             messages.success(request, f'"{todo.title}" marked as incomplete.')
